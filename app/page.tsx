@@ -1,6 +1,9 @@
+// app/page.tsx
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import GameCard from '@/components/GameCard';
@@ -10,9 +13,7 @@ import EmptyState from '@/components/EmptyState';
 import Standings from '@/components/Standings';
 import { calculateHype } from '@/lib/hypeCalculator';
 import { fetchGamesFromAPI, type Game } from '@/lib/nbaApi';
-import { getStandings } from "@/lib/standings"
-import { useRouter } from 'next/navigation';
-
+import { getStandings } from "@/lib/standings";
 
 interface CachedData {
   games: Game[];
@@ -23,57 +24,60 @@ export default function HypeTracker() {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [east, setEast] = useState<any[]>([]);
   const [west, setWest] = useState<any[]>([]);
+  const { user, profile } = useAuth();
+  const router = useRouter();
 
   const getTodayDate = (): string => {
     const today = new Date();
-    return today.toISOString().split('T')[0]; // YYYY-MM-DD
+    return today.toISOString().split('T')[0];
   };
 
-  const router = useRouter();
   const goToLogin = () => {
-    router.push('/login')
-  }
+    router.push('/login');
+  };
 
+  const goToProfile = () => {
+    router.push('/profile');
+  };
 
   useEffect(() => {
     const loadStandings = async () => {
       try {
         const res = await fetch(
           "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings"
-        )
-        const data = await res.json()
+        );
+        const data = await res.json();
 
         const parse = (conf: any) =>
           conf.standings.entries.map((entry: any) => {
             const stat = (name: string) =>
-              entry.stats.find((s: any) => s.name === name)?.value
+              entry.stats.find((s: any) => s.name === name)?.value;
 
             return {
               name: entry.team.displayName,
               wins: stat("wins"),
               losses: stat("losses"),
-            }
-          })
+            };
+          });
 
         const eastConf = data.children.find(
           (c: any) => c.name === "Eastern Conference"
-        )
+        );
         const westConf = data.children.find(
           (c: any) => c.name === "Western Conference"
-        )
+        );
 
-        setEast(parse(eastConf))
-        setWest(parse(westConf))
+        setEast(parse(eastConf));
+        setWest(parse(westConf));
       } catch (err) {
-        console.error("Failed to load standings", err)
+        console.error("Failed to load standings", err);
       }
-    }
+    };
 
-    loadStandings()
-  }, [])
+    loadStandings();
+  }, []);
 
   useEffect(() => {
     const loadGames = async () => {
@@ -138,9 +142,7 @@ export default function HypeTracker() {
   if (error) return <ErrorState message={error} />;
   if (games.length === 0) return <EmptyState />;
 
-
   return (
-
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
       {/* Wavy Gradient Background */}
       <div
@@ -154,26 +156,31 @@ export default function HypeTracker() {
       />
       <style jsx>{`
         @keyframes gradientWave {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
       `}</style>
 
       {/* Content */}
       <div className="relative" style={{ zIndex: 2 }}>
-        <Header title="hypeTracker" subtitle="Today's NBA games sorted by hype rating" onButtonClick={goToLogin} />
+        <Header 
+          title="hypeTracker" 
+          subtitle="Today's NBA games sorted by hype rating" 
+          onButtonClick={user ? goToProfile : goToLogin}
+          showProfile={!!user}
+        />
 
-        <main className="max-w-full mx-auto px-20 py-4 flex justify-between gap-x-6  ">
+        <main className="max-w-full mx-auto px-20 py-4 flex justify-between gap-x-6">
           <div className="space-y-4">
             {games.map((game, index) => (
-              <GameCard key={game.id} game={game} rank={index + 1} />
+              <GameCard 
+                key={game.id} 
+                game={game} 
+                rank={index + 1}
+                favoriteTeam={profile?.favorite_team}
+                timezone={profile?.timezone}
+              />
             ))}
           </div>
           <div className="h-[600px] rounded-lg border border-zinc-800">
