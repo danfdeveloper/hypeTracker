@@ -52,7 +52,7 @@ export default function GameCard({ game, rank, favoriteTeam, timezone = 'America
     const hasFavoriteTeam = isFavoriteTeam(game.home.name) || isFavoriteTeam(game.away.name);
 
     return (
-        <div className={`bg-gray-900 border rounded-lg p-6 hover:border-purple-500 transition-all duration-300 ${
+        <div className={`bg-black border rounded-lg p-6 hover:border-purple-500 transition-all duration-300 ${
             hasFavoriteTeam ? 'border-purple-600 ring-2 ring-purple-500/50' : 'border-gray-800'
         }`}>
             {hasFavoriteTeam && (

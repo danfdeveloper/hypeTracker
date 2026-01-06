@@ -16,6 +16,11 @@ export interface UserProfile {
   updated_at: string
 }
 
+export interface ProfileUpdate {
+  favorite_team?: string | null
+  timezone?: string
+}
+
 export interface Database {
   public: {
     Tables: {

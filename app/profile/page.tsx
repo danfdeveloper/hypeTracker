@@ -117,7 +117,7 @@ export default function ProfilePage() {
         />
 
         <main className="max-w-2xl mx-auto px-6 py-12">
-          <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8">
+          <div className="bg-black/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold">Profile Settings</h2>
               <button

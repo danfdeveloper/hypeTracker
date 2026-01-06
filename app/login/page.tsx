@@ -62,7 +62,7 @@ export default function LoginPage() {
 
             {/* Login Card */}
             <div className="relative z-10 w-full max-w-md px-6">
-                <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8 shadow-2xl">
+                <div className="bg-black/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8 shadow-2xl">
                     {/* Logo/Title */}
                     <div className="text-center mb-8">
                         <Link href="/" className="inline-block">
