@@ -9,6 +9,7 @@ export interface Game {
     home: Team;
     away: Team;
     time: string;
+    date: string; // ISO date string for timezone conversion
     hype?: number;
 }
 
@@ -45,6 +46,7 @@ export const fetchGamesFromAPI = async (date: string): Promise<Game[]> => {
                     wins: parseInt(awayTeam.records?.[0]?.summary?.split('-')[0] || '0'),
                     losses: parseInt(awayTeam.records?.[0]?.summary?.split('-')[1] || '0')
                 },
+                date: event.date, // Keep ISO string for timezone conversion
                 time: new Date(event.date).toLocaleTimeString('en-US', {
                     hour: 'numeric',
                     minute: '2-digit',
