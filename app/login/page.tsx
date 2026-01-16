@@ -147,7 +147,7 @@ export default function LoginPage() {
                     {/* Sign Up/Sign In Toggle */}
                     <div className="mt-6 text-center text-sm text-gray-400">
                         {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-                        <button 
+                        <button
                             onClick={() => setIsSignUp(!isSignUp)}
                             className="text-purple-400 hover:text-purple-300 font-medium transition-colors"
                         >

@@ -55,11 +55,6 @@ function Header({ title, subtitle, onButtonClick, showProfile }: any) {
 
 // Inline GameCard Component
 function GameCard({ game, rank, favoriteTeam, timezone = 'America/New_York' }: any) {
-  const getHypeColor = (hype: number): string => {
-    if (hype >= 75) return 'text-purple-400';
-    if (hype >= 50) return 'text-purple-500';
-    return 'text-purple-600';
-  };
 
   const getHypeLabel = (hype: number): string => {
     if (hype >= 75) return '🔥 MUST WATCH';
@@ -84,23 +79,22 @@ function GameCard({ game, rank, favoriteTeam, timezone = 'America/New_York' }: a
   const hasFavoriteTeam = isFavoriteTeam(game.home.name) || isFavoriteTeam(game.away.name);
 
   return (
-    <div className={`bg-gray-900 border rounded-lg p-6 hover:border-purple-500 transition-all duration-300 ${
-      hasFavoriteTeam ? 'border-purple-600 ring-2 ring-purple-500/50' : 'border-gray-800'
-    }`}>
+    <div className={`bg-gray-900 border rounded-lg p-6 hover:border-purple-500 transition-all duration-300 ${hasFavoriteTeam ? 'border-purple-600 ring-2 ring-purple-500/50' : 'border-gray-800'
+      }`}>
       {hasFavoriteTeam && (
         <div className="mb-2 flex items-center gap-2 text-purple-400 text-sm font-semibold">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
           </svg>
           YOUR TEAM
         </div>
       )}
-      
+
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
           <div className="text-3xl font-bold text-purple-500">#{rank}</div>
           <div>
-            <div className={`text-sm font-semibold ${getHypeColor(game.hype || 0)}`}>
+            <div className={`text-sm font-semibold text-purple-400`}>
               {getHypeLabel(game.hype || 0)}
             </div>
           </div>
@@ -251,9 +245,9 @@ export default function HypeTracker() {
   if (games.length === 0) {
     return (
       <div className="min-h-screen bg-black text-white">
-        <Header 
-          title="hypeTracker" 
-          subtitle="Today's NBA games sorted by hype rating" 
+        <Header
+          title="hypeTracker"
+          subtitle="Today's NBA games sorted by hype rating"
           onButtonClick={() => router.push(user ? '/profile' : '/login')}
           showProfile={!!user}
         />
@@ -284,9 +278,9 @@ export default function HypeTracker() {
       `}</style>
 
       <div className="relative" style={{ zIndex: 2 }}>
-        <Header 
-          title="hypeTracker" 
-          subtitle="Today's NBA games sorted by hype rating" 
+        <Header
+          title="hypeTracker"
+          subtitle="Today's NBA games sorted by hype rating"
           onButtonClick={() => {
             console.log('Button clicked, user:', user);
             router.push(user ? '/profile' : '/login');
@@ -297,9 +291,9 @@ export default function HypeTracker() {
         <main className="max-w-full mx-auto px-20 py-4 flex gap-x-3 items-start">
           <div className="flex-1 space-y-4">
             {games.map((game, index) => (
-              <GameCard 
-                key={game.id} 
-                game={game} 
+              <GameCard
+                key={game.id}
+                game={game}
                 rank={index + 1}
                 favoriteTeam={profile?.favorite_team}
                 timezone={profile?.timezone}
